@@ -1,0 +1,2 @@
+const balance = require("./index");
+

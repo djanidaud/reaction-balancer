@@ -1,0 +1,17 @@
+{
+  "name": "reaction-balancer",
+  "version": "1.0.0",
+  "description": "A simple and efficient balancer of chemical equations",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "module",
+  "keywords": [],
+  "author": "Dzhani Daud",
+  "license": "ISC",
+  "dependencies": {
+    "mathjs": "^9.4.5",
+    "compound-parser": "^1.0.4"
+  }
+}
