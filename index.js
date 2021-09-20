@@ -1,5 +1,5 @@
-import { inv, det, multiply, gcd } from "mathjs";
-import parseCompound from "compound-parser";
+const { inv, det, multiply, gcd } = require("mathjs");
+const parseCompound = require("compound-parser");
 
 /**
  * Takes a chemical reaction and balances it.
@@ -13,18 +13,21 @@ import parseCompound from "compound-parser";
  * @returns {Map<string, number>} A map of the different compounds and their coefficients
  */
 const balance = ({ reactants, products }) => {
-    const compounds = [...reactants, ...products];
-    const [A, vector] = getReactionMatrix(compounds, reactants.length);
-    const inverse = inv(A);
-    const determinant = det(A);
+  const compounds = [...reactants, ...products];
+  const [A, vector] = getReactionMatrix(compounds, reactants.length);
+  // const inverse = inv(A);
+  // const determinant = det(A);
 
-    const coeffs = multiply(multiply(inverse, vector), determinant);
-    coeffs.push(determinant);
-    const greatestMultiplier = gcd(coeffs);
+  const coeffs = multiply(multiply(inverse, vector), determinant);
+  coeffs.push(determinant);
+  const greatestMultiplier = gcd(...coeffs);
 
-    return new Map(
-        coeffs.map((coeff, i) => [compounds[i], Math.abs(coeff / greatestMultiplier)])
-    );
+  return new Map(
+    coeffs.map((coeff, i) => [
+      compounds[i],
+      Math.abs(coeff / greatestMultiplier),
+    ])
+  );
 };
 
 /**
@@ -50,17 +53,17 @@ const balance = ({ reactants, products }) => {
  * @returns {[number[][], number[]]}
  */
 const getReactionMatrix = (compounds, numberOfReactants) => {
-    const atoms = getAtoms(compounds);
-    const lastCompound = compounds.pop();
-    const matrix = atoms.map((atom) =>
-        compounds
-            .map(countAtoms(atom))
-            .map((count, i) => (i < numberOfReactants ? count : -count))
-    );
-    const vector = atoms.map((atom) => countAtoms(atom)(lastCompound));
+  const atoms = getAtoms(compounds);
+  const lastCompound = compounds.pop();
+  const matrix = atoms.map((atom) =>
+    compounds
+      .map(countAtoms(atom))
+      .map((count, i) => (i < numberOfReactants ? count : -count))
+  );
+  const vector = atoms.map((atom) => countAtoms(atom)(lastCompound));
 
-    compounds.push(lastCompound);
-    return [matrix, vector];
+  compounds.push(lastCompound);
+  return [matrix, vector];
 };
 
 /**
@@ -72,11 +75,11 @@ const getReactionMatrix = (compounds, numberOfReactants) => {
  * @returns {string[]}           The different atoms that make up those compounds
  */
 const getAtoms = (compounds) => {
-    const atoms = new Set();
-    compounds.forEach((compound) =>
-        compound.match(/[A-Z][a-z]*/g).forEach((el) => atoms.add(el))
-    );
-    return Array.from(atoms);
+  const atoms = new Set();
+  compounds.forEach((compound) =>
+    compound.match(/[A-Z][a-z]*/g).forEach((el) => atoms.add(el))
+  );
+  return Array.from(atoms);
 };
 
 /**
@@ -84,7 +87,44 @@ const getAtoms = (compounds) => {
  * eg. inputting atom="H" and compound="H2O" would return 2
  */
 const countAtoms = (atom) => (compound) =>
-    parseCompound(compound).get(atom) || 0;
+  parseCompound(compound).get(atom) || 0;
+
+function rref(A) {
+  var rows = A.length;
+  var columns = A[0].length;
+
+  var lead = 0;
+  for (var k = 0; k < rows; k++) {
+    if (columns <= lead) return;
+
+    var i = k;
+    while (A[i][lead] === 0) {
+      i++;
+      if (rows === i) {
+        i = k;
+        lead++;
+        if (columns === lead) return;
+      }
+    }
+    var irow = A[i],
+      krow = A[k];
+    (A[i] = krow), (A[k] = irow);
+
+    var val = A[k][lead];
+    for (var j = 0; j < columns; j++) {
+      A[k][j] /= val;
+    }
+
+    for (var i = 0; i < rows; i++) {
+      if (i === k) continue;
+      val = A[i][lead];
+      for (var j = 0; j < columns; j++) {
+        A[i][j] -= val * A[k][j];
+      }
+    }
+    lead++;
+  }
+  return A;
+}
 
 module.exports = balance;
-

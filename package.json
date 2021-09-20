@@ -4,14 +4,32 @@
   "description": "A simple and efficient balancer of chemical equations",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
+  "bugs": {
+    "url": "https://github.com/djanidaud/reaction-balancer/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/djanidaud/reaction-balancer.git"
+  },
+  "homepage": "https://github.com/djanidaud/reaction-balancer#readme",
   "type": "module",
-  "keywords": [],
+  "keywords": [
+    "chemistry",
+    "balancer",
+    "chemical",
+    "compound",
+    "molecule",
+    "atoms"
+  ],
   "author": "Dzhani Daud",
   "license": "ISC",
   "dependencies": {
     "mathjs": "^9.4.5",
     "compound-parser": "^1.0.4"
+  },
+  "devDependencies": {
+    "jest": "^27.2.0"
   }
 }
