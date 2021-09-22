@@ -50,6 +50,7 @@ const coefficients = (reducedMatrix) => {
   return coeffs;
 };
 
+/** Takes a list of decimal numbers and scales them evenly so that they become whole numbers*/
 const scaleDecimals = (decimals) => {
   const smallest = min(abs(decimals));
   const scaled = divide(decimals, smallest);
