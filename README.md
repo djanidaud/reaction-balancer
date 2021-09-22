@@ -34,7 +34,7 @@ In this case, the balanced equation is: <b>Fe<sub>2</sub>O<sub>3</sub> + `3`H<su
 # Installation
 You can use the package by installing it with [npm](https://www.npmjs.com/package/reaction-balancer) `npm i reaction-balancer`
 
-# How it works?
+# How it works
 ## Step I: Computing the Chemical-Composition Matrix
 To balance a chemical reaction, we first represent it as a series of linear equations. We construct a chemical-composition matrix (A chemical-composition matrix specifies the numbers of atoms of each chemical element which make up each of the reactants and products specified in a given reaction equation.)
 
@@ -64,7 +64,7 @@ prevent round-offs, but we can limit them as much as we can.
 For this reason the package uses [math.js](https://mathjs.org)'s BigNumbers, 
 which dramatically decreese the likelihood of any errors, by improving the accuracy of basic arithmetics with floating-point numbers. 
 
-## Step III: Scaling the coefficients
+## Step III: Scaling the Coefficients
 After extracting the coefficients from the composition matrix, which is now in reduced row echelon form, we scale them appropriately so that they become whole numbers.
 
 And Voilà - these 3 steps cover pretty much everything about how the algorithm works.
