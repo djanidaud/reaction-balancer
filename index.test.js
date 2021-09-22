@@ -1,6 +1,6 @@
 const balance = require("./index");
 
-reactions = [
+const reactions = [
   {
     reactants: ["F2", "H2"],
     products: ["HF"],
