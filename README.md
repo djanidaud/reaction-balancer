@@ -2,7 +2,7 @@
 A simple and efficient balancer of chemical equations. 
 
 Takes a chemical reaction and balances it. Each chemical reaction is inputted as an `{reactants: string[], products: string[]}` object.
-<hr>
+
 
 ## Example Usages
 ### Balancing H<sub>2</sub> + O<sub>2</sub> = H<sub>2</sub>O 
@@ -16,8 +16,7 @@ const reaction = {
 };
 const coeffs = balance(reaction); // Map {"H2" => 2, "O2" => 1, "H2O" => 2}
 ```
-Therefore, the balanced equation is: <b>`2`H<sub>2</sub> + O<sub>2</sub> = `2`H<sub>2</sub>O</b>
-<hr>
+Therefore, the balanced equation is: <b>`2`H<sub>2</sub> + O<sub>2</sub> = `2`H<sub>2</sub>O</b
 
 ### Balancing Fe<sub>2</sub>O<sub>3</sub> + H<sub>2</sub>O = Fe(OH)<sub>3</sub>
 ```js
