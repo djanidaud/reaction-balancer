@@ -54,7 +54,7 @@ const scaleDecimals = (decimals) => {
   const smallest = min(abs(decimals));
   const scaled = divide(decimals, smallest);
 
-  const maxPower = big(Math.pow(10, Math.max(...scaled.map(getPower))));
+  const maxPower = big(Math.pow(10, Math.max(...scaled.map(countDecimals))));
   const wholeNumbers = scaled.map((s) => multiply(big(round(s, 6)), maxPower));
 
   const greatestDivisor = gcd(...wholeNumbers);
@@ -100,7 +100,7 @@ const rref = (matrix) => {
 };
 
 /** Takes a number and returns the amount of decimal places it has */
-const getPower = (decimal) => {
+const countDecimals = (decimal) => {
   const text = abs(decimal).toString();
   const len = text.length;
   const dotIndex = text.indexOf(".");
