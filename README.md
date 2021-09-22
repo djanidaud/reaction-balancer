@@ -64,7 +64,7 @@ prevent round-offs, but we can limit them as much as we can.
 For this reason the package uses [math.js](https://mathjs.org)'s BigNumbers, 
 which dramatically decreese the likelihood of any errors, by improving the accuracy of basic arithmetics with floating-point numbers. 
 
-## Step III: Getting and scaling the coefficients
+## Step III: Scaling the coefficients
 After extracting the coefficients from the composition matrix, which is now in reduced row echelon form, we scale them appropriately so that they become whole numbers.
 
 And Voilà - these 3 steps cover pretty much everything about how the algorithm works.
