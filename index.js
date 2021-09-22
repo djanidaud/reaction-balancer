@@ -16,6 +16,7 @@ const {
   equal,
   gcd,
   min,
+  number,
 } = mathjs;
 
 /**
@@ -59,7 +60,7 @@ const scaleDecimals = (decimals) => {
   const wholeNumbers = scaled.map((s) => multiply(big(round(s, 6)), maxPower));
 
   const greatestDivisor = gcd(...wholeNumbers);
-  return wholeNumbers.map((num) => abs(divide(num, greatestDivisor)));
+  return wholeNumbers.map((num) => number(abs(divide(num, greatestDivisor))));
 };
 
 /** Takes a matrix and returns its reduced row echelon form */
