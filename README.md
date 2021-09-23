@@ -61,7 +61,7 @@ elimination on an n by n matrix typically requires approximately O(n<sup>3</sup>
 
 <b>So how have we resolved this issue?</b> Technically, as long as we are doing a lot of arithmetic with floating-point numbers, we can't fully
 prevent round-offs. For this reason, the package uses [math.js](https://mathjs.org)'s `Fractions`, 
-which completely replace the need for any calculations with floating-point numbers, <b>thus solving any potential round-off issues!</b>
+which completely replace the need for any calculations with floating-point numbers, <b>thus preventing any round-off errors from ever occurring!</b>
 
 ## Step III: Scaling the Coefficients
 After extracting the coefficients from the composition matrix, which is now in reduced row echelon form, we scale them appropriately so that they become whole numbers.
