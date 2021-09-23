@@ -2,15 +2,13 @@ const parseCompound = require("compound-parser");
 const { create, all } = require("mathjs");
 const mathjs = create(all);
 mathjs.config({
-  number: "BigNumber",
-  precision: 128,
+  number: "Fraction",
 });
 const {
-  bignumber: big,
+  fraction: frac,
   add,
   multiply,
   divide,
-  round,
   abs,
   subtract,
   equal,
@@ -33,7 +31,7 @@ const {
 const balance = ({ reactants, products }) => {
   const compounds = [...reactants, ...products];
   const reduced = rref(getCompositionMatrix(compounds, reactants.length));
-  const wholeCoeffs = scaleDecimals(coefficients(reduced));
+  const wholeCoeffs = scaleFractions(coefficients(reduced));
 
   return new Map(compounds.map((compound, i) => [compound, wholeCoeffs[i]]));
 };
@@ -43,22 +41,19 @@ const coefficients = (reducedMatrix) => {
   const columns = reducedMatrix[0].length;
   const coeffs = reducedMatrix
     .map((row, i) =>
-      row.filter((_, j) => j > i).reduce((acc, v) => add(acc, big(v)), 0)
+      row.filter((_, j) => j > i).reduce((acc, v) => add(acc, frac(v)), frac(0))
     )
-    .map((val) => (equal(val, 0) ? 1 : val));
-  coeffs.push(...Array(Math.max(0, columns - rows)).fill(1));
-
+    .map((val) => (equal(val, 0) ? frac(1) : val));
+  coeffs.push(...Array(Math.max(0, columns - rows)).fill(frac(1)));
   return coeffs;
 };
 
-/** Takes a list of decimal numbers and scales them evenly so that they become whole numbers*/
-const scaleDecimals = (decimals) => {
-  const smallest = min(abs(decimals));
-  const scaled = divide(decimals, smallest);
-
-  const maxPower = big(Math.pow(10, Math.max(...scaled.map(countDecimals))));
-  const wholeNumbers = scaled.map((s) => multiply(big(round(s, 6)), maxPower));
-
+/** Takes a list of fractions and scales them evenly so that they become whole numbers*/
+const scaleFractions = (fractions) => {
+  const smallest = min(abs(fractions));
+  const scaled = divide(fractions, smallest);
+  const scalar = multiply(...scaled.map((val) => val.d || 1));
+  const wholeNumbers = number(multiply(scaled, scalar));
   const greatestDivisor = gcd(...wholeNumbers);
   return wholeNumbers.map((num) => number(abs(divide(num, greatestDivisor))));
 };
@@ -68,6 +63,7 @@ const rref = (matrix) => {
   const rows = matrix.length;
   const columns = matrix[0].length;
   let lead = 0;
+  matrix = frac(matrix);
 
   for (let r = 0; r < rows; r++) {
     if (columns <= lead) return matrix;
@@ -83,7 +79,7 @@ const rref = (matrix) => {
     }
 
     if (i !== r) {
-      const tmp = JSON.parse(JSON.stringify(matrix[i]));
+      const tmp = matrix[i].map(({ s, d, n }) => frac({ s, d, n }));
       matrix[i] = matrix[r];
       matrix[r] = tmp;
     }
@@ -99,14 +95,6 @@ const rref = (matrix) => {
     lead++;
   }
   return matrix;
-};
-
-/** Takes a number and returns the amount of decimal places it has */
-const countDecimals = (decimal) => {
-  const text = abs(decimal).toString();
-  const len = text.length;
-  const dotIndex = text.indexOf(".");
-  return len - (dotIndex === -1 ? len : dotIndex + 1);
 };
 
 /**

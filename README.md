@@ -36,7 +36,7 @@ You can use the package by installing it with [npm](https://www.npmjs.com/packag
 
 # How it works
 ## Step I: Computing the Chemical-Composition Matrix
-To balance a chemical reaction, we first represent it as a series of linear equations. We construct a chemical-composition matrix (A chemical-composition matrix specifies the numbers of atoms of each chemical element which make up each of the reactants and products specified in a given reaction equation.)
+To balance a chemical reaction, we first represent it as a series of linear equations. We construct a chemical-composition matrix (A chemical-composition matrix specifies the numbers of atoms of each chemical element that make up each of the reactants and products specified in a given reaction equation.)
 
 eg `H2 + O2 = H2O` would result in the following composition matrix:
 
@@ -59,10 +59,9 @@ any algorithm that requires we conduct a lot of
 simple arithmetic steps is subject to this problem. Unfortunately, this applies to Gaussian Elimination too - performing Gaussian
 elimination on an n by n matrix typically requires approximately O(n<sup>3</sup>) arithmetic operations (which is feasible, but still a lot!). 
 
-How have we addressed this issue? Technically, we can't fully
-prevent round-offs, but we can limit them as much as we can.
-For this reason the package uses [math.js](https://mathjs.org)'s BigNumbers, 
-which dramatically decreese the likelihood of any errors, by improving the accuracy of basic arithmetics with floating-point numbers. 
+<b>So how have we resolved this issue?</b> Technically, as long as we are doing a lot of arithmetic with floating-point numbers, we can't fully
+prevent round-offs. For this reason, the package uses [math.js](https://mathjs.org)'s `Fractions`, 
+which completely replace the need for any calculations with floating-point numbers, <b>thus solving any potential round-off issues!</b>
 
 ## Step III: Scaling the Coefficients
 After extracting the coefficients from the composition matrix, which is now in reduced row echelon form, we scale them appropriately so that they become whole numbers.
