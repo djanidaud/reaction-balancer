@@ -33,7 +33,13 @@ const balance = ({ reactants, products }) => {
   const reduced = rref(getCompositionMatrix(compounds, reactants.length));
   const wholeCoeffs = scaleFractions(coefficients(reduced));
 
-  return new Map(compounds.map((compound, i) => [compound, wholeCoeffs[i]]));
+  return new Map(compounds.map((compound, i) => [
+    compound,
+    {
+      coefficient: wholeCoeffs[i], //adds a reactant and product type to the output, for simple referencing of the map. This is based off of the input. 
+      type: i < reactants.length ? "reactant" : "product",
+    },
+  ]));
 };
 
 const coefficients = (reducedMatrix) => {
